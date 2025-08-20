@@ -1,0 +1,38 @@
+modules = ["java-graalvm22.3", "nodejs-20", "web"]
+
+[nix]
+channel = "stable-25_05"
+packages = ["tree"]
+
+[workflows]
+runButton = "Start Web Admin"
+
+[[workflows.workflow]]
+name = "Start Web Server"
+author = 46629772
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "javac -cp . *.java"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "java -cp . Main"
+
+[[workflows.workflow]]
+name = "Start Web Admin"
+author = 46629772
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "javac -cp . *.java"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "java -cp . Main"
+
+[[ports]]
+localPort = 8080
+externalPort = 80

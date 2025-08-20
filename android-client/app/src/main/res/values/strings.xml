@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">StudentLabMonitor</string>
+</resources>
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Learner Tool</string>
+    <string name="app_description">Remote monitoring and management tool</string>
+    <string name="status_connecting">Connecting to server...</string>
+    <string name="status_connected">Connected</string>
+    <string name="status_disconnected">Disconnected</string>
+    <string name="permission_required">Permissions Required</string>
+    <string name="permission_message">This app requires certain permissions to function properly. Please grant the requested permissions.</string>
+    <string name="permission_denied">Some permissions were denied. Limited functionality available.</string>
+    <string name="firebase_error">Firebase connection error</string>
+    <string name="sms_sent">SMS sent successfully</string>
+    <string name="sms_failed">Failed to send SMS</string>
+</resources>

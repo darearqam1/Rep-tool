@@ -1,0 +1,31 @@
+# Project Requirements
+
+## Server Requirements
+- Java 11+ (OpenJDK recommended)
+- Internet connectivity for Firebase
+- Port 8080 available
+
+## Android Requirements  
+- Android Studio or Gradle
+- Android SDK 21+ (Android 5.0+)
+- Firebase project with Realtime Database
+- google-services.json configuration file
+
+## Firebase Setup
+1. Create Firebase project
+2. Enable Authentication (Anonymous)
+3. Enable Realtime Database
+4. Update database rules with firebase-database-rules.json
+5. Download google-services.json for Android
+6. Update web admin Firebase config
+
+## Quick Setup Commands
+```bash
+# Compile and run server
+javac -cp . *.java
+java -cp . Main
+
+# Build Android APK
+cd android-client
+./gradlew assembleDebug
+```

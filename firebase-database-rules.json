@@ -1,0 +1,56 @@
+
+{
+  "rules": {
+    ".read": "auth != null",
+    ".write": "auth != null",
+    "devices": {
+      ".read": "auth != null",
+      ".write": "auth != null",
+      "$deviceId": {
+        ".read": "auth != null",
+        ".write": "auth != null",
+        ".validate": "newData.hasChildren(['device_name', 'model']) || data.exists()",
+        "calls": {
+          ".read": "auth != null",
+          ".write": "auth != null"
+        },
+        "sms": {
+          ".read": "auth != null",
+          ".write": "auth != null"
+        },
+        "location": {
+          ".read": "auth != null",
+          ".write": "auth != null"
+        },
+        "device_info": {
+          ".read": "auth != null",
+          ".write": "auth != null"
+        },
+        "last_checkin": {
+          ".read": "auth != null",
+          ".write": "auth != null"
+        },
+        "status": {
+          ".read": "auth != null",
+          ".write": "auth != null"
+        }
+      }
+    },
+    "commands": {
+      ".read": "auth != null",
+      ".write": "auth != null",
+      "$deviceId": {
+        ".read": "auth != null",
+        ".write": "auth != null",
+        "$commandType": {
+          ".read": "auth != null",
+          ".write": "auth != null"
+        }
+      }
+    },
+    "admin": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    }
+  }
+}
